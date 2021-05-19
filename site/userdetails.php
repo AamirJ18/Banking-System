@@ -13,6 +13,41 @@
 
   <title>Bank of TSF</title>
   <link rel="shortcut icon" href="TsfLogo.png" type="image/x-icon">
+  <style type="text/css">
+    .transact-table{
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: 650px;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.transact-table thead tr{
+  background-color: orange;
+  color: black;
+  
+}
+
+.transact-table th,
+.transact-table td{
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+.transact-table tbody tr:nth-child(even){
+  background-color: #f3f3f3;
+}
+
+.transact-table tbody tr:last-of-type{
+  border-bottom: 2px solid #009879;
+}
+
+  </style>
+</head>
+<body>
 </head>
 <body>
 
@@ -31,13 +66,13 @@
             <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="index.php">HOME</a>
           </li>
           <li class="nav-item">
-            <a style="color: white; font-size: 25px; margin-left: 40px;" class="nav-link" href="#">CREATE USER <span class="sr-only">(current)</span> </a>
+            <a style="color: white; font-size: 25px; margin-left: 40px;" class="nav-link" href="#">VIEW CUSTOMERS<span class="sr-only">(current)</span> </a>
           </li>
           <li class="nav-item">
             <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="transfermoney.php">MAKE TRANSACTION</a>
           </li>
           <li class="nav-item">
-            <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="#viewTransaction">HISTORY</a>
+            <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="viewTransaction.php">HISTORY</a>
           </li>
         </ul> 
       </div>
@@ -48,66 +83,44 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <!-- End of Navbar -->
 
+  
 <?php
-include 'config.php';
-if(isset($_POST['submit'])){
-    $name=$_POST['name'];
-    $email=$_POST['email'];
-    $balance=$_POST['balance'];
-    $sql="insert into users(name,email,balance) values('{$name}','{$email}','{$balance}')";
-    $result=mysqli_query($conn,$sql);
-    if($result){
-               echo "<script> alert('Hurray! User created');
-                               window.location='transfermoney.php';
-                     </script>";
-                    
-    }
-  }
-
+    include 'config.php';
+    $sql = "SELECT * FROM users";
+    $result = mysqli_query($conn,$sql);
 ?>
 
+<!--Table-->
+<h2 style="text-align: center; margin-top:40px; font-family: 'Fredoka One', cursive;">CUSTOMERS</h2>
+<table class="transact-table">
+  <thead>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Operation</th>
+  </tr>
+  </thead>
 
-<h2 class="text-center pt-4" style="color: black;">Create a User</h2>
-<br>
+<tbody>
+  <?php 
+        while($rows=mysqli_fetch_assoc($result)){
+    ?>
+        <tr style="color : black;">
+            <td class="py-2"><?php echo $rows['id'] ?></td>
+            <td class="py-2"><?php echo $rows['name']?></td>
+            <?php
+            $stid=$rows['id'];
+            ?>
+            <td><a href="viewCustomer.php?id=<?=$stid;?>"> <button class="hero-button">VIEW</button></a></td> 
+        </tr>
+                <?php
+                    }
+                ?>
+</tbody>
+  
+</table>
+<!--End of Table-->
 
-
-<div class="background">
-	<div class="container1">
-		<div class="screen">
-			<div class="screen-header">
-				<div class="screen-header-ellipsis"></div>
-				<div class="screen-header-ellipsis"></div>
-				<div class="screen-header-ellipsis"></div>
-			</div>
-		</div>
-		
-
-		<div class="screen-body">
-			<div class="screen-body-item left">
-				<img class="img-fluid" src="users.jpg" style="border: none; border-radius: 50%;">
-			</div>
-			
-			<div class="screen-body-item">
-				<form class="app-form" method="post">
-					<div class="app-form-group">
-			              <input class="app-form-control" placeholder="NAME" type="text" name="name" required>
-			            </div>
-			            <div class="app-form-group">
-			              <input class="app-form-control" placeholder="EMAIL" type="email" name="email" required>
-			            </div>
-			            <div class="app-form-group" >
-			              <input class="app-form-control" placeholder="BALANCE" type="number" name="balance" required>
-			            </div>
-			            <br>
-			            <div class="app-form-group-button">
-			              <input class="app-form-button" type="submit" value="CREATE" name="submit"></input>
-			              <input class="app-form-button" type="reset" value="RESET" name="reset"></input>
-			            </div>	
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 
 <!-- Footer -->
   <footer>

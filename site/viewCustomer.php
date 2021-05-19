@@ -1,83 +1,3 @@
-<?php
-include 'config.php';
-
-if(isset($_POST['submit']))
-{
-    $from = $_GET['id'];
-    $to = $_POST['to'];
-    $amount = $_POST['amount'];
-
-    $sql = "SELECT * from users where id=$from";
-    $query = mysqli_query($conn,$sql);
-    $sql1 = mysqli_fetch_array($query); // returns array of sender
-
-    $sql = "SELECT * from users where id=$to";
-    $query = mysqli_query($conn,$sql);
-    $sql2 = mysqli_fetch_array($query); // returns array of receiver
-
-
-    // condition to check input of negative value by user
-    if (($amount)<0)
-   {
-        echo '<script type="text/javascript">';
-        echo ' alert("Sorry! Negative values cannot be transferred")';  // showing an alert box.
-        echo '</script>';
-    }
-
-
-    // condition to check insufficient balance
-    else if($amount > $sql1['balance']) 
-    {
-        
-        echo '<script type="text/javascript">';
-        echo ' alert("Bad Luck! Insufficient Balance")';  // showing an alert box.
-        echo '</script>';
-    }
-    
-
-    // condition to check zero values
-    else if($amount == 0){
-
-         echo "<script type='text/javascript'>";
-         echo "alert('Sorry! Zero value cannot be transferred')";
-         echo "</script>";
-     }
-
-
-    else {
-        
-                // deducting amount from sender's account
-                $newbalance = $sql1['balance'] - $amount;
-                $sql = "UPDATE users set balance=$newbalance where id=$from";
-                mysqli_query($conn,$sql);
-             
-
-                // adding amount to reciever's account
-                $newbalance = $sql2['balance'] + $amount;
-                $sql = "UPDATE users set balance=$newbalance where id=$to";
-                mysqli_query($conn,$sql);
-                
-                $sender = $sql1['name'];
-                $receiver = $sql2['name'];
-                $sql = "INSERT INTO transaction(`sender`, `receiver`, `balance`) VALUES ('$sender','$receiver','$amount')";
-                $query=mysqli_query($conn,$sql);
-
-                if($query)
-                {
-                     echo "<script> alert('Transaction Successful');
-                                     window.location='viewTransaction.php';
-                           </script>";   
-                }
-
-                $newbalance= 0;
-                $amount =0;
-        }
-    
-}
-?>
-
-
-<!-- Transfer momey -> Transaction Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +23,8 @@ if(isset($_POST['submit']))
 
 
 .contact{
-  background-color: rgba(255,165,0,0.6);
+	
+	background-color: rgba(255,165,0,0.7);
   max-width:600px;
   margin:auto;
   box-sizing:border-box;
@@ -122,6 +43,7 @@ input[type="text"], textarea{
   width:100%;
   box-sizing: border-box;
   padding:12px 10px;
+  
   outline:none;
   border:1px solid black;
   color:black;
@@ -132,25 +54,21 @@ input[type="text"], textarea{
 input[type="submit"]{
   width: 100%;
   box-sizing:border-box;
-  text-decoration: none;
-  text-transform: uppercase;
-  padding:13px 20px;
+  padding:10px;
   margin-top:30px;
-  font-weight: bold;
-  background:orange;
-  border-radius:200px;
-  color:black;
-  cursor: pointer;
-  border: 2px solid orange;
-  margin-top: 20px;
+  outline:none;
+  border:none;
+  background:black;
+  border-radius:20px;
+  color:#fff;
+  line-height: 1.5;
+  font-size: 20px;
 }
 
 input[type=submit]:hover{
-  text-decoration: none;
- background-color: black;
- color: orange;
- 
+  background:orange;
 }
+
 /*-----End of Contact-----*/
 
 
@@ -192,7 +110,7 @@ input[type=submit]:hover{
 <!-- End of Navbar -->
 
 <!-- Form -->
-        <h2>TRANSACTION</h2>
+        <h2>CUSTOMER DETAILS</h2>
             <?php
                 include 'config.php';
                 $sid=$_GET['id'];
@@ -206,43 +124,22 @@ input[type=submit]:hover{
             ?>
 
             <form class="contact" method="post">
-                <label>Sender's Name:</label><br/>
+            	<label>ID:</label>
+            	<input type="text" name="id" value="<?php echo $rows['id']; ?>"readonly>
+            	<hr>
+
+                <label>Name:</label><br/>
                 <input type="text" name="Name" value="<?php echo $rows['name']; ?>"readonly>
-                <hr>
+				<hr>
+
+                <label>Email:</label>
+            	<input type="text" name="id" value="<?php echo $rows['email']; ?>"readonly>
+            	<hr>
 
                 <label>Balance:</label><br/>
                 <input type="text" name="balance" value="<?php echo $rows['balance']; ?>" readonly>
-                <hr>
 
-                <label>Transfer to:</label><br/>
-                <select name="to" class="form-control" required>
-                <option value="" disabled selected>Choose</option> 
-                <?php
-                include 'config.php';
-                $sid=$_GET['id'];
-                $sql = "SELECT * FROM users where id!=$sid";
-                $result=mysqli_query($conn,$sql);
-                if(!$result)
-                {
-                    echo "Error ".$sql."<br>".mysqli_error($conn);
-                }
-                while($rows = mysqli_fetch_assoc($result)) {
-                ?>
-                <option value="<?php echo $rows['id'];?>" >
-                
-                    <?php echo $rows['name'] ;?>
-               
-                </option>
-                <?php 
-                    } 
-                ?>
-            </select> <br/>
-                <hr>
-                <label>Amount:</label><br/>
-                <input type="number" name="amount" required>
-
-                <input type="submit" name="submit" value="Transfer"><br/>
-            </form>
+                </form>
 <!--End of Form-->
 
 <!-- Footer -->

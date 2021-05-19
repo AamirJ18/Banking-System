@@ -98,9 +98,9 @@
         <i class="fas fa-users fa-7x"></i>
         
           <div class="card-body">
-            <h5 class="card-title">Create User</h5>
-            <p class="card-text">Create your profile over here</p>
-            <a href="userdetails.php" class="hero-button">Create</a>
+            <h5 class="card-title">View Customers</h5>
+            <p class="card-text">View details of all the customers</p>
+            <a href="userdetails.php" class="hero-button">View Customers</a>
           </div>
       </div>
       

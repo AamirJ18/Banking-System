@@ -65,7 +65,7 @@
             <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="index.php">HOME</a>
           </li>
           <li class="nav-item">
-            <a style="color: orange; font-size: 25px; margin-left: 40px;" class="nav-link" href="userdetails.php">CREATE USER</a>
+            <a style="color: orange; font-size: 25px; margin-left: 40px;" class="nav-link" href="userdetails.php">VIEW CUSTOMERS</a>
           </li>
           <li class="nav-item">
             <a style="color: orange; font-size: 25px; margin-left: 40px;"class="nav-link" href="transfermoney.php">MAKE TRANSACTION</a>
@@ -90,7 +90,7 @@
 ?>
 
 <!-- Table -->
-<h2 style="text-align: center; margin-top:40px; font-family: 'Fredoka One', cursive;">View Transaction History</h2>
+<h2 style="text-align: center; margin-top:40px; font-family: 'Fredoka One', cursive;">TRANSACTION HISTORY</h2>
 <table class="transact-table">
   <thead>
   <tr>
